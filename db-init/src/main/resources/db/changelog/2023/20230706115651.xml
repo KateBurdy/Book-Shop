@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="20230706115651-db-declaration" author="KateBurdy">
+        <sql>
+            CREATE TABLE users
+            (
+                id         UUID PRIMARY KEY,
+                username   VARCHAR(255) NOT NULL,
+                password   VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP WITHOUT TIME ZONE,
+                updated_at TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at TIMESTAMP WITHOUT TIME ZONE
+            );
+            CREATE TABLE files
+            (
+                id           UUID PRIMARY KEY,
+                filename     VARCHAR(255) NOT NULL,
+                content_type VARCHAR(255) NOT NULL,
+                created_at   TIMESTAMP WITHOUT TIME ZONE,
+                updated_at   TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at   TIMESTAMP WITHOUT TIME ZONE
+            );
+            CREATE TABLE file_data
+            (
+                id         UUID PRIMARY KEY,
+                file_id    UUID  NOT NULL,
+                data       BYTEA NOT NULL,
+                created_at TIMESTAMP WITHOUT TIME ZONE,
+                updated_at TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at TIMESTAMP WITHOUT TIME ZONE,
+                CONSTRAINT fk_file_id
+                    FOREIGN KEY (file_id) REFERENCES files (id)
+            );
+            CREATE TABLE genres
+            (
+                id          UUID PRIMARY KEY,
+                name        VARCHAR(255) NOT NULL,
+                description VARCHAR(255) NOT NULL,
+                created_at  TIMESTAMP WITHOUT TIME ZONE,
+                updated_at  TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at  TIMESTAMP WITHOUT TIME ZONE
+            );
+
+            CREATE TABLE authors
+            (
+                id          UUID PRIMARY KEY,
+                name        VARCHAR(255) NOT NULL,
+                description VARCHAR(255) NOT NULL,
+                created_at  TIMESTAMP WITHOUT TIME ZONE,
+                updated_at  TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at  TIMESTAMP WITHOUT TIME ZONE
+            );
+
+            CREATE TABLE products
+            (
+                id          UUID PRIMARY KEY,
+                name        VARCHAR(255) NOT NULL,
+                description VARCHAR(255) NOT NULL,
+                image_id    UUID NOT NULL,
+                image_url   VARCHAR(255) NOT NULL,
+                price       DECIMAL(19, 2) NOT NULL,
+                genre_id    UUID NOT NULL,
+                author_id   UUID NOT NULL,
+                created_at  TIMESTAMP WITHOUT TIME ZONE,
+                updated_at  TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at  TIMESTAMP WITHOUT TIME ZONE,
+                CONSTRAINT fk_genre_id
+                    FOREIGN KEY (genre_id) REFERENCES genres (id),
+                CONSTRAINT fk_author_id
+                    FOREIGN KEY (author_id) REFERENCES authors (id)
+            );
+            CREATE TABLE carts
+            (
+                id         UUID PRIMARY KEY,
+                user_id    UUID NOT NULL,
+                created_at TIMESTAMP WITHOUT TIME ZONE,
+                updated_at TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at TIMESTAMP WITHOUT TIME ZONE,
+                CONSTRAINT fk_user_id
+                    FOREIGN KEY (user_id) REFERENCES users (id)
+            );
+            CREATE TABLE cart_items
+            (
+                id             UUID PRIMARY KEY,
+                cart_id        UUID           NOT NULL,
+                product_id     UUID           NOT NULL,
+                quantity       INT            NOT NULL,
+                price_per_unit DECIMAL(19, 2) NOT NULL,
+                discount       DECIMAL(4, 2),
+                total_price    DECIMAL(19, 2) NOT NULL,
+                created_at     TIMESTAMP WITHOUT TIME ZONE,
+                updated_at     TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at     TIMESTAMP WITHOUT TIME ZONE,
+                CONSTRAINT fk_cart_id
+                    FOREIGN KEY (cart_id) REFERENCES carts (id),
+                CONSTRAINT fk_product_id
+                    FOREIGN KEY (product_id) REFERENCES products (id)
+            );
+            CREATE TABLE orders
+            (
+                id         UUID PRIMARY KEY,
+                user_id    UUID         NOT NULL,
+                created_on TIMESTAMP    NOT NULL,
+                status     VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP WITHOUT TIME ZONE,
+                updated_at TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at TIMESTAMP WITHOUT TIME ZONE,
+                CONSTRAINT fk_user_id
+                    FOREIGN KEY (user_id) REFERENCES users (id)
+            );
+
+            CREATE TABLE order_items
+            (
+                id             UUID PRIMARY KEY,
+                order_id       UUID           NOT NULL,
+                product_id     UUID           NOT NULL,
+                quantity       INT            NOT NULL,
+                price_per_unit DECIMAL(19, 2) NOT NULL,
+                discount       DECIMAL(4, 2),
+                total_price    DECIMAL(19, 2) NOT NULL,
+                created_at     TIMESTAMP WITHOUT TIME ZONE,
+                updated_at     TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at     TIMESTAMP WITHOUT TIME ZONE,
+                CONSTRAINT fk_order_id
+                    FOREIGN KEY (order_id) REFERENCES orders (id),
+                CONSTRAINT fk_product_id
+                    FOREIGN KEY (product_id) REFERENCES products (id)
+            );
+            CREATE TABLE payments
+            (
+                id          UUID PRIMARY KEY,
+                user_id     UUID           NOT NULL,
+                order_id    UUID           NOT NULL,
+                total_price DECIMAL(19, 2) NOT NULL,
+                payment_url VARCHAR(255)   NOT NULL,
+                status      VARCHAR(255)   NOT NULL,
+                created_at  TIMESTAMP WITHOUT TIME ZONE,
+                updated_at  TIMESTAMP WITHOUT TIME ZONE,
+                deleted_at  TIMESTAMP WITHOUT TIME ZONE,
+                CONSTRAINT fk_user_id
+                    FOREIGN KEY (user_id) REFERENCES users (id),
+                CONSTRAINT fk_order_id
+                    FOREIGN KEY (order_id) REFERENCES orders (id)
+            );
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>

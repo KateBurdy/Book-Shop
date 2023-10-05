@@ -1,0 +1,57 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="20230707115752-db-data-init" author="KateBurdy">
+        <sql>
+            INSERT INTO public.users (id, username, password, created_at, updated_at, deleted_at)
+            VALUES ('6db4178b-e89e-4711-b47b-6f1d8ce68459', 'John L', '$2a$10$u4RDYrqz4UEJL7m5fMIeqOxv9AgOcZ.WA.9gkoDmP5pa66ZFvQZj2', '2023-07-07 11:57:52', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+
+            INSERT INTO public.files (id, filename, content_type, created_at, updated_at, deleted_at)
+            VALUES ('29bf4ff7-f6af-4cb0-97e6-74d3232df0c8', 'forapi.json', 'application/json', '2023-07-07 11:57:52', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+
+            INSERT INTO public.file_data (id, file_id, data, created_at, updated_at, deleted_at)
+            VALUES ('3c799e08-a6e0-4d1e-ac26-706edabb7086', '29bf4ff7-f6af-4cb0-97e6-74d3232df0c8',
+                    '[
+                      {
+                        "price": 123.45
+                      }
+                    ]', '2023-07-07 11:57:52', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+
+            INSERT INTO public.genres (id, name, description, created_at, updated_at)
+            VALUES ('a6c5bd28-8aa7-4f93-bec5-f5dc4f15d142', 'Fiction', 'Fiction genre', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+
+            INSERT INTO public.authors (id, name, description, created_at, updated_at)
+            VALUES ('a6c5bd28-8aa7-4f93-bec5-f5dc4f15d141', 'George Orwell', 'Famous author', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+
+            INSERT INTO public.products (id, name, description, image_id, image_url, price, genre_id, author_id, created_at, updated_at, deleted_at)
+            VALUES ('a6c5bd28-8aa7-4f93-bec5-f5dc4f15d143',
+                    'Nineteen Eighty-Four',
+                    'Nineteen Eighty-Four is a dystopian social science fiction novel and cautionary tale by English writer George Orwell.',
+                    'f8c3de3d-1fea-4d7c-a8b0-29f63c4c3424',
+                    'http://localhost:8080/api/files/f8c3de3d-1fea-4d7c-a8b0-29f63c4c3424',
+                    123.45,
+                    'a6c5bd28-8aa7-4f93-bec5-f5dc4f15d142',
+                    'a6c5bd28-8aa7-4f93-bec5-f5dc4f15d141',
+                    '2023-07-07 11:57:52',
+                    '2023-07-07 11:57:52',
+                    null);
+
+            INSERT INTO public.orders (id, user_id, created_on, status, created_at, updated_at, deleted_at)
+            VALUES ('a7e61de8-b9a6-4fd4-820a-60c511e3fdc7', '6db4178b-e89e-4711-b47b-6f1d8ce68459', '2023-07-07 11:57:52'
+                   , 'NEW', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+
+            INSERT INTO public.order_items (id, order_id, product_id, quantity, price_per_unit, discount, total_price, created_at, updated_at, deleted_at)
+            VALUES ('98335d2e-7ad2-46eb-835d-0f715bfc26a8', 'a7e61de8-b9a6-4fd4-820a-60c511e3fdc7', 'a6c5bd28-8aa7-4f93-bec5-f5dc4f15d143', 5, 100.00, 0.10, 450.00, '2023-07-07 11:57:52', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+
+            INSERT INTO public.payments (id, user_id, order_id, total_price, payment_url, status, created_at, updated_at, deleted_at)
+            VALUES ('c9dc7fd6-6ca9-4cc6-83e8-55c008063f6e', '6db4178b-e89e-4711-b47b-6f1d8ce68459', 'a7e61de8-b9a6-4fd4-820a-60c511e3fdc7', 1234.56, 'http://localhost:9090/payments/process?callback_url=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2F6db4178b-e89e-4711-b47b-6f1d8ce68459%2Forders%2Fa7e61de8-b9a6-4fd4-820a-60c511e3fdc7%2Fpayments%2Fsuccess&amp;price=1234.56', 'SUCCESS', '2023-07-07 11:57:52', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+
+            INSERT INTO public.carts (id, user_id, created_at, updated_at, deleted_at)
+            VALUES ('32257d6c-3a88-48ed-b064-07888c91a71c', '6db4178b-e89e-4711-b47b-6f1d8ce68459', '2023-07-07 11:57:52', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+
+            INSERT INTO public.cart_items (id, cart_id, product_id, quantity, price_per_unit, discount, total_price)
+            VALUES ('98335d2e-7ad2-46eb-835d-0f715bfc26a8', '32257d6c-3a88-48ed-b064-07888c91a71c', 'a6c5bd28-8aa7-4f93-bec5-f5dc4f15d143', 5, 100.00, 0.10, 450.00);
+        </sql>
+    </changeSet>
+</databaseChangeLog>
