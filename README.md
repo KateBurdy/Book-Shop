@@ -1,4 +1,4 @@
-## Project overview
+# Project overview
 
 The project represents a Book Shop implemented as a microservices architecture. The key technologies used are Spring Boot, Spring Cloud, Spring Security, and JWT for authentication.
 
