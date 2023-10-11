@@ -37,12 +37,12 @@
                     '2023-07-07 11:57:52',
                     null);
 
-            INSERT INTO public.orders (id, user_id, created_on, status, created_at, updated_at, deleted_at)
+            INSERT INTO public.orders (id, user_id, created_on, status, created_at, updated_at)
             VALUES ('a7e61de8-b9a6-4fd4-820a-60c511e3fdc7', '6db4178b-e89e-4711-b47b-6f1d8ce68459', '2023-07-07 11:57:52'
                    , 'NEW', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
 
-            INSERT INTO public.order_items (id, order_id, product_id, quantity, price_per_unit, discount, total_price, created_at, updated_at, deleted_at)
-            VALUES ('98335d2e-7ad2-46eb-835d-0f715bfc26a8', 'a7e61de8-b9a6-4fd4-820a-60c511e3fdc7', 'a6c5bd28-8aa7-4f93-bec5-f5dc4f15d143', 5, 100.00, 0.10, 450.00, '2023-07-07 11:57:52', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
+            INSERT INTO public.order_items (id, order_id, product_id, quantity, price_per_unit, discount, total_price, created_at, updated_at)
+            VALUES ('98335d2e-7ad2-46eb-835d-0f715bfc26a8', 'a7e61de8-b9a6-4fd4-820a-60c511e3fdc7', 'a6c5bd28-8aa7-4f93-bec5-f5dc4f15d143', 5, 100.00, 0.10, 450.00, '2023-07-07 11:57:52', '2023-07-07 11:57:52');
 
             INSERT INTO public.payments (id, user_id, order_id, total_price, payment_url, status, created_at, updated_at, deleted_at)
             VALUES ('c9dc7fd6-6ca9-4cc6-83e8-55c008063f6e', '6db4178b-e89e-4711-b47b-6f1d8ce68459', 'a7e61de8-b9a6-4fd4-820a-60c511e3fdc7', 1234.56, 'http://localhost:9090/payments/process?callback_url=http%3A%2F%2Flocalhost%3A8080%2Fapi%2Fusers%2F6db4178b-e89e-4711-b47b-6f1d8ce68459%2Forders%2Fa7e61de8-b9a6-4fd4-820a-60c511e3fdc7%2Fpayments%2Fsuccess&amp;price=1234.56', 'SUCCESS', '2023-07-07 11:57:52', '2023-07-07 11:57:52', '2023-07-07 11:57:52');
